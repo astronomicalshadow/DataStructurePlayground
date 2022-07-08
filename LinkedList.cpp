@@ -14,6 +14,8 @@ class OneWayLinkedList
 
     m_Node* m_Cursor = nullptr;
 
+    int m_ListSize = 0;
+
 public:
 
     void CreateList(std::vector<T> items) // create a node to initialize m_Head and m_Cursor
@@ -31,6 +33,8 @@ public:
 
         m_Head->data = items[0];
 
+        m_ListSize++;
+
         if (items.size() > 1)
         {
             AppendItems(items.begin() + 1, items.end()); // if items > 1, then start appending
@@ -46,9 +50,12 @@ public:
 
         m_Cursor->NextNode = new m_Node;
 
+        m_ListSize++;
+
         m_Cursor = m_Cursor->NextNode;
 
         m_Cursor->data = items[0];
+
         
         if (items.size() > 1) // 1 item is problem
         {
@@ -64,6 +71,8 @@ public:
         }
 
         m_Cursor->NextNode = new m_Node;
+        
+        m_ListSize++;
 
         m_Cursor = m_Cursor->NextNode;
 
@@ -75,14 +84,12 @@ public:
         }
     }
 
-    void InsertItems(std::vector<T> items, int Position)
+    void InsertItems(int Position, std::vector<T> items)
     {
 
         if (items.empty()) return;
 
         int element = 0;
-
-        struct m_Node* Temp = nullptr;
 
         m_Cursor = m_Head;
 
@@ -92,7 +99,7 @@ public:
             element++;
         }
 
-        Temp = m_Cursor->NextNode;
+        struct m_Node* Temp = m_Cursor->NextNode;
 
         m_Cursor->NextNode = nullptr;
 
@@ -103,7 +110,52 @@ public:
 
         Temp = nullptr;
     }
+
+    void RemoveItems (int Position, int AmountDelete = 1)
+    { 
+        if (AmountDelete == 0) return;
+        if (Position < 0 || Position > m_ListSize) return;
+
+        int element = 0;
+        int deleted = 0;
+
+        m_Cursor = m_Head;
+
+        while (element < Position)
+        {
+            m_Cursor = m_Cursor->NextNode;
+            element++;
+        }
+
+        struct m_Node* TempFront, *TempBack = nullptr; 
         
+        TempFront = m_Cursor;
+
+        TempBack, m_Cursor = m_Cursor->NextNode;
+
+        while (deleted != AmountDelete && m_Cursor->NextNode)
+        {
+            m_Cursor = m_Cursor->NextNode; // might be error because it could point to null
+
+            delete TempBack;
+
+            deleted++;
+
+            m_ListSize--;
+
+            TempBack = m_Cursor;
+        }
+
+        if (deleted != AmountDelete)
+        {
+            delete m_Cursor;
+            m_Cursor = nullptr;
+        }
+
+        TempFront->NextNode = m_Cursor;
+
+        TempFront, TempBack = nullptr;
+    }
 
     void PrintList()
     {
@@ -111,10 +163,12 @@ public:
 
         while (m_Cursor)
         {
-            std::cout << m_Cursor->data << " ";
+            std::cout << m_Cursor->data << " "; // segfault??????
 
             m_Cursor = m_Cursor->NextNode;
         }
+
+        std::cout << std::endl;
 
     }
 
@@ -185,7 +239,11 @@ int main()
 
     List1Way.PrintList();
 
-    List1Way.InsertItems({4, 3}, 3);
+    List1Way.InsertItems(0, {4, 3}); // currently will only work from the second element up
+
+    List1Way.PrintList();
+
+    List1Way.RemoveItems(0, 20); // currently will only work from the second element up
 
     List1Way.PrintList();
 
