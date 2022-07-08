@@ -120,7 +120,7 @@ int main()
 
     List1Way.AppendItems({3, 4, 5, 6});
 
-    List1Way.CreateList({8}); // will append instead of create new
+    List1Way.CreateList({7}); // will append instead of create new
 
     List1Way.PrintList();
 
