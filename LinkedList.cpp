@@ -20,7 +20,7 @@ public:
     {
         if (m_Head != nullptr) // can only create list once
         {
-            AppendItems(items); // if items > 1, then appending
+            AppendItems(items); // append items
             return;
         }
 
