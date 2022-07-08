@@ -2,7 +2,7 @@
 #include <vector>
 
 template<class T> 
-class One_Way_LinkedList
+class OneWayLinkedList
 {
     struct m_Node
     {
@@ -18,6 +18,9 @@ public:
 
     void CreateList(std::vector<T> items) // create a node to initialize m_Head and m_Cursor
     {
+        
+        if (items.empty()) return;
+
         if (m_Head != nullptr) // can only create list once
         {
             AppendItems(items); // append items
@@ -53,7 +56,7 @@ public:
         }
     }
 
-    void AppendItems(typename std::vector<T>::iterator items, typename std::vector<T>::iterator end) // append items to list
+    void AppendItems(typename std::vector<T>::iterator items, typename std::vector<T>::iterator end) // append items to list, overload function
     {
         while(m_Cursor->NextNode)
         {
@@ -71,6 +74,36 @@ public:
             AppendItems(items + 1, end);
         }
     }
+
+    void InsertItems(std::vector<T> items, int Position)
+    {
+
+        if (items.empty()) return;
+
+        int element = 0;
+
+        struct m_Node* Temp = nullptr;
+
+        m_Cursor = m_Head;
+
+        while (element != Position)
+        {
+            m_Cursor = m_Cursor->NextNode;
+            element++;
+        }
+
+        Temp = m_Cursor->NextNode;
+
+        m_Cursor->NextNode = nullptr;
+
+        AppendItems(items);
+
+        m_Cursor->NextNode = Temp; // cursor position changed to last element of new item because
+                                    // used in the AppendItems call
+
+        Temp = nullptr;
+    }
+        
 
     void PrintList()
     {
@@ -105,8 +138,36 @@ public:
 };
 
 // template<class T> 
-// class Two_Way_LinkedList
-// {};
+// class TwoWayLinkedList
+// {
+//     struct m_Node
+//     {
+//         T data;
+
+//         struct m_Node* PreviousNode, NextNode = nullptr;
+//     }
+
+//     struct m_Node* m_Head, m_Cursor = nullptr;
+
+// public:
+
+//     void Create2WayList (std::vector<T> items)
+//     {
+//         if (items.empty()) return;
+
+//         m_Cursor = m_Head = new m_Node;
+
+//         m_Head->data = items[0];
+
+//         // if(items.size > 1)
+//         // {
+//     }
+
+//     void PushBackItems() // add items to back
+
+//     void SqueezeItems() // add items to front
+
+// };
 
 // template<class T> // maybe, maybe not, redundant work?
 // class LinkedList_3D
@@ -114,13 +175,17 @@ public:
 
 int main()
 {
-    One_Way_LinkedList<int> List1Way;
+    OneWayLinkedList<int> List1Way;
 
     List1Way.CreateList({1, 2});
 
     List1Way.AppendItems({3, 4, 5, 6});
 
     List1Way.CreateList({7}); // will append instead of create new
+
+    List1Way.PrintList();
+
+    List1Way.InsertItems({4, 3}, 3);
 
     List1Way.PrintList();
 
