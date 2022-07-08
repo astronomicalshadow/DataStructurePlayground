@@ -89,6 +89,25 @@ public:
 
         if (items.empty()) return;
 
+        if (m_ListSize == 0) CreateList(items);
+        
+        if (Position == 0) // for inserting from the beginning
+        {
+            struct m_Node* Temp = m_Head;
+
+            m_Head = nullptr;
+
+            CreateList(items);
+
+            m_Cursor->NextNode = Temp;
+
+            return;
+        }
+
+        // for all other cases
+
+        if (Position > m_ListSize) Position == m_ListSize;
+
         int element = 0;
 
         m_Cursor = m_Head;
@@ -107,19 +126,56 @@ public:
 
         m_Cursor->NextNode = Temp; // cursor position changed to last element of new item because
                                     // used in the AppendItems call
-
-        Temp = nullptr;
     }
 
     void RemoveItems (int Position, int AmountDelete = 1)
     { 
         if (AmountDelete == 0) return;
+
         if (Position < 0 || Position > m_ListSize) return;
 
-        int element = 0;
-        int deleted = 0;
+        int element = 0; // track position
+
+        int deleted = 0; // track amount deleted
 
         m_Cursor = m_Head;
+
+        if (Position == 0) // if delete from the front
+        {
+            if (AmountDelete >= m_ListSize)
+            {
+                DeleteList(); // delete the whole list if amount to delete >= size of List
+
+                return;
+            }
+
+            struct m_Node* TempSave = nullptr;
+
+            while (element != AmountDelete) // find the starting point after deletion
+            {
+                m_Cursor = m_Cursor->NextNode;
+
+                element++;
+            }
+
+            TempSave = m_Cursor; // save position to Temp
+
+            m_Cursor = m_Head;
+
+            while (m_Cursor->NextNode != TempSave->NextNode)
+            {
+                m_Cursor = m_Cursor->NextNode;
+
+                delete m_Head;
+
+                m_ListSize--;
+
+                m_Head = m_Cursor;
+            }
+
+            return;
+
+        } // end of delete from front 
 
         while (element < Position)
         {
@@ -127,53 +183,59 @@ public:
             element++;
         }
 
-        struct m_Node* TempFront, *TempBack = nullptr; 
+        struct m_Node* TempSave,* TempMove = nullptr; 
         
-        TempFront = m_Cursor;
+        TempSave = m_Cursor; // use to save position
 
-        TempBack, m_Cursor = m_Cursor->NextNode;
+        TempMove, m_Cursor = m_Cursor->NextNode; // use to delete
 
-        while (deleted != AmountDelete && m_Cursor->NextNode)
+        while (deleted != AmountDelete && m_Cursor->NextNode) // exit if there is no next
         {
-            m_Cursor = m_Cursor->NextNode; // might be error because it could point to null
+            m_Cursor = m_Cursor->NextNode;
 
-            delete TempBack;
+            delete TempMove;
 
             deleted++;
 
             m_ListSize--;
 
-            TempBack = m_Cursor;
+            TempMove = m_Cursor;
         }
 
-        if (deleted != AmountDelete)
+        if (deleted != AmountDelete) // check what reason while loop exited
         {
             delete m_Cursor;
             m_Cursor = nullptr;
         }
 
-        TempFront->NextNode = m_Cursor;
-
-        TempFront, TempBack = nullptr;
+        TempSave->NextNode = m_Cursor;
     }
 
     void PrintList()
     {
+        if (m_ListSize == 0) 
+        {
+            std::cout << "No List present\n";
+            return;
+        }
+
         m_Cursor = m_Head;
 
         while (m_Cursor)
         {
-            std::cout << m_Cursor->data << " "; // segfault??????
+            std::cout << m_Cursor->data << " ";
 
             m_Cursor = m_Cursor->NextNode;
         }
 
-        std::cout << std::endl;
+        std::cout << "\n";
 
     }
 
     void DeleteList()
     {
+        if (m_ListSize == 0) return;
+
         m_Cursor = m_Head;
 
         while (m_Cursor->NextNode)
@@ -186,6 +248,8 @@ public:
         }
 
         delete m_Cursor;
+
+        m_ListSize = 0;
 
     }
 
@@ -235,16 +299,15 @@ int main()
 
     List1Way.AppendItems({3, 4, 5, 6});
 
-    List1Way.CreateList({7}); // will append instead of create new
+    List1Way.CreateList({7});
 
     List1Way.PrintList();
 
-    List1Way.InsertItems(0, {4, 3}); // currently will only work from the second element up
+    List1Way.InsertItems(0, {-1, 0});
 
     List1Way.PrintList();
 
-    List1Way.RemoveItems(0, 20); // currently will only work from the second element up
-
+    List1Way.RemoveItems(0, 20);
     List1Way.PrintList();
 
     List1Way.DeleteList();
