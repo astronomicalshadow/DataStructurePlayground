@@ -40,7 +40,7 @@ public:
         {
             AppendItems(items.begin() + 1, items.end()); // if items > 1, then start appending
         }
-    }
+    } // end of create list
 
     void AppendItems(std::vector<T> items) // append items to list
     {
@@ -62,7 +62,7 @@ public:
         {
             AppendItems(items.begin() + 1, items.end());
         }
-    }
+    } // end of append items
 
     void AppendItems(typename std::vector<T>::iterator items, typename std::vector<T>::iterator end) // append items to list, overload function
     {
@@ -83,7 +83,7 @@ public:
         {
             AppendItems(items + 1, end);
         }
-    }
+    } // end of append items iterator overload
 
     void InsertItems(int Position, std::vector<T> items)
     {
@@ -136,22 +136,18 @@ public:
 
         m_Cursor->NextNode = Temp; // cursor position changed to last element of new item because
                                     // used in the AppendItems call
-    }
+    } // end of insert items
 
     void RemoveItems (int Position, int AmountDelete = 1)
     { 
         if (AmountDelete == 0) return;
 
-        if (Position < 0 || Position > m_ListSize) return;
-
-        int element = 0; // track position
-
-        int deleted = 0; // track amount deleted
-
-        m_Cursor = m_Head;
+        if (Position < 0 || Position > m_ListSize) return; // out of scope
 
         if (Position == 0) // if delete from the front
         {
+            int element = 0;
+
             if (AmountDelete >= m_ListSize)
             {
                 DeleteList(); // delete the whole list if amount to delete >= size of List
@@ -188,9 +184,15 @@ public:
         } // end of delete from front 
 
          // delete from anywhere else
+
+        int element, deleted = 0; // track position and amount deleted
+
+        m_Cursor = m_Head;
+
         while (element < Position)
         {
             m_Cursor = m_Cursor->NextNode;
+
             element++;
         }
 
@@ -220,7 +222,8 @@ public:
         }
 
         TempSave->NextNode = m_Cursor; // connect Nodes together
-    }
+
+    } // end of remove items
 
     void PrintList()
     {
