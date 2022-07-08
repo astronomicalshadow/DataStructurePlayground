@@ -7,6 +7,7 @@ class OneWayLinkedList
     struct m_Node
     {
         T data;
+
         struct m_Node* NextNode = nullptr;
     };
 
@@ -43,8 +44,8 @@ public:
 
     void AppendItems(std::vector<T> items) // append items to list
     {
-        while(m_Cursor->NextNode)
-        {
+        while (m_Cursor->NextNode) // doesn't care where m_Cursor is because its appending,
+        {                           // as long its at the end
             m_Cursor = m_Cursor->NextNode;
         }
 
@@ -65,7 +66,7 @@ public:
 
     void AppendItems(typename std::vector<T>::iterator items, typename std::vector<T>::iterator end) // append items to list, overload function
     {
-        while(m_Cursor->NextNode)
+        while (m_Cursor->NextNode)
         {
             m_Cursor = m_Cursor->NextNode;
         }
@@ -89,30 +90,39 @@ public:
 
         if (items.empty()) return;
 
-        if (m_ListSize == 0) CreateList(items);
+        if (m_ListSize <= 0) 
+        {
+            CreateList(items); // incase List was deleted
+            return;
+        }
         
         if (Position == 0) // for inserting from the beginning
         {
-            struct m_Node* Temp = m_Head;
+            struct m_Node* Temp = m_Head; // save position of the head
 
-            m_Head = nullptr;
+            m_Head = nullptr; // make a new list, see CreateList if condition
 
             CreateList(items);
 
-            m_Cursor->NextNode = Temp;
+            m_Cursor->NextNode = Temp; // m_Cursor is always nullptr of the last appended node
+
+            return;
+        }
+
+        if (Position >= m_ListSize) // out of scope protection
+        {
+            AppendItems(items);
 
             return;
         }
 
         // for all other cases
 
-        if (Position > m_ListSize) Position == m_ListSize;
-
         int element = 0;
 
         m_Cursor = m_Head;
 
-        while (element != Position)
+        while (element < Position)
         {
             m_Cursor = m_Cursor->NextNode;
             element++;
@@ -177,6 +187,7 @@ public:
 
         } // end of delete from front 
 
+         // delete from anywhere else
         while (element < Position)
         {
             m_Cursor = m_Cursor->NextNode;
@@ -189,7 +200,7 @@ public:
 
         TempMove, m_Cursor = m_Cursor->NextNode; // use to delete
 
-        while (deleted != AmountDelete && m_Cursor->NextNode) // exit if there is no next
+        while (deleted != AmountDelete && m_Cursor->NextNode) // exit if there is no NextNode
         {
             m_Cursor = m_Cursor->NextNode;
 
@@ -202,13 +213,13 @@ public:
             TempMove = m_Cursor;
         }
 
-        if (deleted != AmountDelete) // check what reason while loop exited
+        if (deleted != AmountDelete) // check if we deleted enough
         {
             delete m_Cursor;
             m_Cursor = nullptr;
         }
 
-        TempSave->NextNode = m_Cursor;
+        TempSave->NextNode = m_Cursor; // connect Nodes together
     }
 
     void PrintList()
@@ -221,12 +232,14 @@ public:
 
         m_Cursor = m_Head;
 
-        while (m_Cursor)
+        while (m_Cursor->NextNode)
         {
             std::cout << m_Cursor->data << " ";
 
             m_Cursor = m_Cursor->NextNode;
         }
+
+        std::cout << m_Cursor->data << " "; // print last node
 
         std::cout << "\n";
 
@@ -248,6 +261,8 @@ public:
         }
 
         delete m_Cursor;
+
+        m_Head = nullptr; // point at head incase more operations
 
         m_ListSize = 0;
 
@@ -301,16 +316,19 @@ int main()
 
     List1Way.CreateList({7});
 
-    List1Way.PrintList();
-
-    List1Way.InsertItems(0, {-1, 0});
+    List1Way.AppendItems({8});
 
     List1Way.PrintList();
 
-    List1Way.RemoveItems(0, 20);
+    List1Way.InsertItems(20, {-1, 0});
+
     List1Way.PrintList();
 
-    List1Way.DeleteList();
+    // List1Way.RemoveItems(0, 20);
+
+    // List1Way.PrintList();
+
+    // List1Way.DeleteList();
 
     return 0;
 }
