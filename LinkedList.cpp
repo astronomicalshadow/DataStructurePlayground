@@ -56,7 +56,6 @@ public:
         m_Cursor = m_Cursor->NextNode;
 
         m_Cursor->data = items[0];
-
         
         if (items.size() > 1) // 1 item is problem
         {
@@ -92,7 +91,7 @@ public:
 
         if (m_ListSize <= 0) 
         {
-            CreateList(items); // incase List was deleted
+            CreateList(items); // in case List was deleted
             return;
         }
         
@@ -227,9 +226,9 @@ public:
 
     void PrintList()
     {
-        if (m_ListSize == 0) 
+        if (m_ListSize <= 0) 
         {
-            std::cout << "No List present\n";
+            std::cout << "List size is:" << m_ListSize << "\n";
             return;
         }
 
@@ -265,7 +264,7 @@ public:
 
         delete m_Cursor;
 
-        m_Head = nullptr; // point at head incase more operations
+        m_Head = nullptr; // point at head in case more operations
 
         m_ListSize = 0;
 
@@ -313,6 +312,8 @@ int main()
 {
     OneWayLinkedList<int> List1Way;
 
+    // this is pass by copy, but can be made into pass by reference for bigger vectors
+    
     List1Way.CreateList({1, 2});
 
     List1Way.AppendItems({3, 4, 5, 6});
