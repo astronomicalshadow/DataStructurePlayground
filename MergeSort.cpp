@@ -67,7 +67,7 @@ public:
                         continue;
                     }
 
-                   while(ightCounter < ArrayPointers.back()->size())
+                   while(RightCounter < ArrayPointers.back()->size())
                     {
                         // optional statement
                         if (ArrayPointers[i]->at(LeftCounter) == ArrayPointers.back()->at(RightCounter))
