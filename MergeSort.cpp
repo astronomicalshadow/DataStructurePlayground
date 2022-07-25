@@ -36,14 +36,12 @@ public:
         }
     }
 
-    void Split(std::vector<T>* array)
-    {
-        std::vector<T>* TempArrayLeft = new std::vector<T>(array->begin(), array->begin() + ceil(array->size() * 0.5));   
-        std::vector<T>* TempArrayRight = new std::vector<T>(array->begin() + ceil(array->size() * 0.5), array->end());
+    void Split(std::vector<T>* Array)
+    { 
+        std::vector<T>* TempArrayRight = new std::vector<T>(Array->begin() + ceil(Array->size() * 0.5), Array->end());
+        Array->erase(Array->begin() + ceil(Array->size() * 0.5), Array->end());
 
-        delete array;
-
-        TempArrayLeft->size() > 1 ? Split(TempArrayLeft) : ArrayPointers.push_back(TempArrayLeft);
+        Array->size() > 1 ? Split(Array) : ArrayPointers.push_back(Array);
 
         TempArrayRight->size() > 1 ? Split(TempArrayRight) : ArrayPointers.push_back(TempArrayRight);
     }
