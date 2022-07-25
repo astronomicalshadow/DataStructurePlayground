@@ -2,7 +2,7 @@
 #include <vector>
 #include <cmath>
 
-template<typename T = double>
+template<typename T>
 class MergeSort
 {
     // i could use smart pointers
@@ -118,8 +118,8 @@ public:
 
 int main()
 {
-    MergeSort m;
-    for (const auto& iter : *m.Sort({9,10,1}))
+    MergeSort<int> m;
+    for (const auto& iter : *m.Sort({1, -2, 7}))
     {
         std::cout << iter <<' ';
     }
