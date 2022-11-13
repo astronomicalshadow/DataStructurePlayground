@@ -3,3 +3,4 @@
 \+ Merge sort<br>
 \+ SelectionSort <br>
 \+ Prime Number - finds the nth prime number<br>
+\+ State Machine with a singleton design
