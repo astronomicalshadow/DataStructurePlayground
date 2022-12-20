@@ -1,0 +1,5 @@
+# ninja log v5
+1	330	1671492046385662222	CMakeFiles/DataStructurePlayground.dir/PrimeNumber.cpp.o	8b1bcf23f32a63c3
+1	338	1671492046393987232	CMakeFiles/DataStructurePlayground.dir/SelectionSort.cpp.o	df7117b12902ca27
+0	345	1671492046401284178	CMakeFiles/DataStructurePlayground.dir/LinkedList.cpp.o	b609c17be2d77097
+1	361	1671492046416933425	CMakeFiles/DataStructurePlayground.dir/MergeSort.cpp.o	c9c949f4079649c
