@@ -81,13 +81,13 @@ public:
         return std::move(Array);
     };
 
-    // auto operator * (const Matrix& Other){};
+    // auto operator * (Matrix& Other) const{};
 
-    // auto Dot(const Matrix& Other){};
+    // auto Dot(Matrix& Other) const{};
 
-    // auto Cross(const Matrix& Other){};
+    // auto Cross(Matrix& Other) const{};
 
-    // auto Det(const Matrix& Other){};
+    // auto Det(Matrix& Other) const{};
     
     void print() const
     {
