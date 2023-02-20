@@ -1,5 +1,5 @@
 #ignore .exe files
 .DS_Store
-*.exe
 .vscode/
 .idea/
+Build/
