@@ -5,3 +5,4 @@
 \+ Prime Number - finds the nth prime number<br>
 \+ State Machine with a singleton design <br>
 \+ Convert 32 bit to 16 bit floating point IEEE 754
+\+ Bare bone binary tree implementation <br>
