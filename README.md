@@ -6,3 +6,4 @@
 \+ State Machine with a singleton design <br>
 \+ Fram converts 32 bit to 16 bit floating point IEEE 754 <br>
 \+ Bare bone binary tree implementation <br>
+\+ Optional implementation in C++11 with templates <br>
