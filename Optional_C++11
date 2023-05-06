@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 
-#define ERROR -128
+#define NULL_VAL -128
 
 template<typename T>
 class Optional
@@ -12,7 +12,7 @@ public:
 
     [[nodiscard]] T Get() const
     {
-        return Flag ? Value : static_cast<T>(ERROR);
+        return Flag ? Value : static_cast<T>(NULL_VAL);
     }
 
     void operator = (const T& V)
@@ -44,18 +44,25 @@ public:
     constexpr Optional() = default;
     constexpr Optional(T* V) : Value(V){};
 
-    [[nodiscard]] const T* Get() const { return Value; }
+    [[nodiscard]] const T* Get() const
+    {
+        return Value;
+    }
 
-    void operator = (const T& V) { Value = &V; }
+    void operator = (const T& V)
+    {
+        Value = &V;
+    }
+
+    const T operator*() const 
+    { 
+        return *Value;
+    }
 
     friend std::ostream& operator << (std::ostream& OS, const Optional& Obj) 
     {
         return Obj.Get() == nullptr ? OS : OS << Obj.Get();
     }
-
-    // pointers don't have destructors
-    void sDelete() { delete Value; }
-    void aDelete() { delete[] Value; }
 
 private:
     T* Value{nullptr};
@@ -72,16 +79,14 @@ int main()
 
     Optional<const char*> d = "fekfj";
 
-    Optional<int*> asdf = new int[]{1, 2, 3, 4, 5};
-    asdf.aDelete();
-
     Optional<const char*> e;
-    std::string eStatus{ (e.Get() == nullptr) ? "nullptr" : "not nullptr" };
+    const char* print = (e.Get() == nullptr) ? "nullptr" : "not nullptr";
 
     std::cout << a << std::endl;
     std::cout << b << std::endl;
-    std::cout << c << std::endl;
+    std::cout << *c << std::endl;
     std::cout << d << std::endl;
     std::cout << e << std::endl;
-    std::cout << eStatus << std::endl;
+    std::cout << print << std::endl;
 }
+ 
