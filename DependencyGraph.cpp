@@ -150,7 +150,7 @@ namespace VT
 		 */
 		template<typename Target>
 			requires std::movable<Target>
-		bool insert(Target&& Obj, std::string NodeName, std::function<void(Target&)> Destructor = [](void(Target&)){})
+		bool insert(Target&& Obj, std::string NodeName, std::function<void(Target&)> Destructor = [](Target&){})
 		{
 			using TargetType = DependencyGraphImpl::DependencyGraphNode_T_List<Target>;
 
